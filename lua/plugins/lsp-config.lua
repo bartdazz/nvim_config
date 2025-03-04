@@ -28,9 +28,9 @@ return {
             lspconfig.pyright.setup({
                 capabilities = capabilities
             })
-            lspconfig.r_language_server.setup({
-                capabilities = capabilities
-            })
+            --lspconfig.r_language_server.setup({
+--                capabilities = capabilities
+--            })
             --lspconfig.java_language_server.setup({})
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
             --vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
