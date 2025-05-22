@@ -10,10 +10,45 @@ return {
         },
     },
     {
+        "R-nvim/cmp-r",
+    },
+    {
         "hrsh7th/nvim-cmp",
         config = function()
             local cmp = require("cmp")
+            local luasnip = require("luasnip")
             require("luasnip.loaders.from_vscode").lazy_load()
+            require("luasnip.loaders.from_lua").lazy_load({ paths = "~/.config/nvim/lua/snippets" })
+            require("cmp_r").setup({})
+            require("cmp_nvim_ultisnips").setup{}
+            local lspkind = require("lspkind")
+            local lsp_symbols = {
+                Text = "󰉿",
+                Method = "󰆧",
+                Function = "󰊕",
+                Constructor = "",
+                Field = "󰜢",
+                Variable = "󰀫",
+                Class = "󰠱",
+                Interface = "",
+                Module = "",
+                Property = "󰜢",
+                Unit = "󰑭",
+                Value = "󰎠",
+                Enum = "",
+                Keyword = "󰌋",
+                Snippet = "",
+                Color = "󰏘",
+                File = "󰈙",
+                Reference = "󰈇",
+                Folder = "󰉋",
+                EnumMember = "",
+                Constant = "󰏿",
+                Struct = "󰙅",
+                Event = "",
+                Operator = "󰆕",
+                TypeParameter = "",
+            }
 
             cmp.setup({
                 snippet = {
@@ -26,34 +61,94 @@ return {
                     documentation = cmp.config.window.bordered(),
                 },
                 mapping = cmp.mapping.preset.insert({
-                    ["<C-p>"] = cmp.mapping.select_prev_item(),
-                    ["<C-n>"] = cmp.mapping.select_next_item(),
                     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-Space>"] = cmp.mapping.complete(),
-                    ["<C-e>"] = cmp.mapping.abort(),
-                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+                    ["<CR>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            if luasnip.expandable() then
+                                luasnip.expand()
+                            else
+                                cmp.confirm({
+                                    select = true,
+                                })
+                            end
+                        else
+                            fallback()
+                        end
+                    end),
+
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        elseif luasnip.locally_jumpable(1) then
+                            luasnip.jump(1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        elseif luasnip.locally_jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
                 }),
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
                     { name = "luasnip" }, -- For luasnip users.
-                    --{ name = "vsnips" }, -- For vim users.
+                    { name = "cmp_r" },
+                    { name = "ultisnips" },
                 }, {
                     { name = "buffer" },
                 }),
+                formatting = {
+                    format = lspkind.cmp_format({
+                        mode = "symbol", -- show only symbol annotations
+                        maxwidth = 50, -- set the max width correctly
+                        ellipsis_char = "...",
+                        show_labelDetails = true,
+                        before = function(entry, vim_item)
+                            vim_item.kind = lsp_symbols[vim_item.kind]
+                            if entry.source.name == "cmp_tabnine" then
+                                vim_item.kind = "   (TabNine)"
+                                if
+                                    entry.completion_vim_item.data ~= nil
+                                    and entry.completion_vim_item.data.detail ~= nil
+                                then
+                                    vim_item.kind = "   (" .. entry.completion_vim_item.data.detail .. ")"
+                                end
+                            end
+                            vim_item.menu = ({
+                                buffer = "[Buffer]",
+                                cmp_tabnine = "[Cmp]",
+                                nvim_lsp = "[LSP]",
+                                treesitter = "[TS]",
+                                -- cody = "[SG]",
+                                -- path = "[Path]",
+                                luasnip = "[Snippet]",
+                            })[entry.source.name]
+                            return vim_item
+                        end,
+                    }),
+                },
             })
-            --require("cmp").setup({ sources = {{ name = "cmp_r" }}})
-            --require("cmp_r").lazy_load({})
-        end,
+        end, -- Ensure `end` properly closes the function
     },
-    {
-        "R-nvim/cmp-r",
-        {
-            "hrsh7th/nvim-cmp",
-            config = function()
-                require("cmp").setup({ sources = { { name = "cmp_r" } } })
-                require("cmp_r").setup({})
-            end,
-        },
+    {  -- setting ultisnips
+        "SirVer/ultisnips",
+        -- dependencies = {
+        --  "honza/vim-snippets", -- optional
+        --},
+        dependencies = { "quangnguyen30192/cmp-nvim-ultisnips" }, -- to use ultisnips with nvim-cmp
+        config = function()
+            vim.g.UltiSnipsExpandTrigger = "<tab>"
+            vim.g.UltiSnipsJumpForwardTrigger = "<tab>"
+            vim.g.UltiSnipsJumpBackwardTrigger = "<s-tab>"
+            vim.g.UltiSnipsSnippetDirectories = { "UltiSnips", "my_snippets" }
+        end,
     },
 }

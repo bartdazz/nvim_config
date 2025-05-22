@@ -2,20 +2,34 @@ return {
     {
         "R-nvim/R.nvim",
         config = function()
-            opts = {
-                auto_start = "on startup",
+            local opts = {
+                -- auto_start = "on startup",
+                hook = {
+                    on_filetype = function()
+                        vim.api.nvim_buf_set_keymap(0, "n", "<Enter>", "<Plug>RDSendLine", {})
+                        vim.api.nvim_buf_set_keymap(0, "v", "<Enter>", "<Plug>RSendSelection", {})
+                        vim.api.nvim_buf_set_keymap(
+                            0,
+                            "n",
+                            "<localleader>rc",
+                            "<Plug>RmdInsertChunk",
+                            { noremap = true }
+                        )
+                    end,
+                },
+                R_args = { "--quiet", "--no-save" },
+                min_editor_width = 72,
+                rconsole_width = 78,
+                disable_cmds = {
+                    "RClearConsole",
+                    "RCustomStart",
+                    "RSPlot",
+                    "RSaveClose",
+                    "RInsertPipe",
+                },
+                pdfviewer = "~/Applications/Skim.app",
             }
+            require("r").setup(opts)
         end,
     },
---    {
---        "R-nvim/cmp-r",
---        {
---            "hrsh7th/nvim-cmp",
---            config = function()
---                require("cmp").setup({ sources = { { name = "cmp_r" } } })
---                require("cmp_r").setup({})
---                require("r").setup({ assign_map = "_" })
---            end,
---        },
---    },
 }

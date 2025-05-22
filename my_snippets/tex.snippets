@@ -1,0 +1,152 @@
+# snippets per formule
+
+
+#global !p
+#def math():
+#	return int(vim.eval('vimtex#syntax#in_mathzone()')) > 0
+#endglobal
+
+snippet "(^|[^a-zA-Z])mm" "Inline LaTeX math" rA
+`!p snip.rv = match.group(1)`\$ ${1:${VISUAL:}} \$ $0
+endsnippet
+
+snippet \[ "ambiente matematico" A
+\[ $1 \] $0
+endsnippet
+
+snippet "(^|[^a-zA-Z])ff" "\frac{}{}" rA
+`!p snip.rv = match.group(1)`\frac{${1:${VISUAL:}}}{$2}\, $0
+endsnippet
+
+snippet ( "apre e chiude parentesi" iA
+(${1:${VISUAL:}}) $0
+endsnippet
+
+snippet "(^|[a-zA-Z ]|[\}\)\]\|'])__" "indice" rA
+`!p snip.rv = match.group(1)`_{$1} $0
+endsnippet
+
+snippet "(^|[a-zA-Z ]|[\}\)\]\|'])^^" "apice" rA
+`!p snip.rv = match.group(1)`^{$1} $0
+endsnippet
+
+snippet ° "circ" iA
+\circ
+endsnippet
+
+#Simboli
+
+snippet := "definizione" iA
+\coloneq
+endsnippet
+
+snippet :- "definizione" iA
+\colon 
+endsnippet
+
+snippet || "vert" iA
+\lvert
+endsnippet
+
+snippet aa "4l" iA
+\forall\,
+endsnippet
+
+snippet EE "exists" iA
+\exists\,
+endsnippet 
+
+snippet "(^|[a-zA-Z ]|[\}\)\]\|'])00" "infinito" rA
+`!p snip.rv = match.group(1)`\infty
+endsnippet
+
+snippet sqn "rad n-esima" iA
+\sqrt[n]{$1} $0
+endsnippet
+
+snippet sq2 "rad 2-esima" iA
+\sqrt{$1} $0
+endsnippet
+
+snippet lr "left-right" iA
+\left $1 \right $0
+endsnippet
+
+snippet ++ "cdot" iA
+\cdot $0
+endsnippet
+
+#Analisi queste formule vanno fatte espandere solo in ambiente matematico!!!
+
+snippet "(^|[^a-zA-Z])rot" "rotore" r
+\vec{\nabla} \times $0
+endsnippet
+
+snippet "(^|[^a-zA-Z])lap" "laplaciano" r
+\nabla^2
+endsnippet
+
+snippet "(^|[^a-zA-Z])div" "divergenza" r
+\vec{\nabla} \cdot $0
+endsnippet
+
+snippet int0 "integrale da 0 a infinito" A
+\int_0^\infty $0
+endsnippet
+
+snippet sumi "somma" iA
+\sum_{$1}^{$2} $0
+endsnippet
+
+snippet sumj0 "somma 0, infty su j" A
+\sum_{j=0}^\infty $0
+endsnippet
+
+snippet sumn0 "somma 0, infty su j" A
+\sum_{n=0}^\infty $0
+endsnippet
+
+snippet prodir "prod i-r" iA
+\prod_{i=1}^r $0
+endsnippet
+
+snippet prod "prod" i
+\prod_{$1}^{$2} $0
+endsnippet
+
+snippet "(^|[^a-zA-Z])pa" "derivata parziale" r
+\pderiv{$1}{$2} $0
+endsnippet
+
+snippet "(^|[^a-zA-Z])ppa" "derivata parziale n-esima" r
+\pderiv[$1]{$2}{$3} $0
+endsnippet
+
+snippet "(^|[^a-zA-Z])di" "derivata" r
+\deriv{$1}{$2} $0
+endsnippet
+
+snippet "(^|[^a-zA-Z])ddi" "derivata i-esima" r
+\deriv[$1]{$2}{$3} $0
+endsnippet
+
+#non funziona
+snippet :: "\colon" iA
+\colon $0
+endsnippet
+
+
+
+#notazione vettoriale
+snippet "(^|[^a-zA-Z])vv" "vettore" rA
+`!p snip.rv = match.group(1)`\vec{${1:${VISUAL:}}} $0
+endsnippet 
+
+snippet "(^|[^a-zA-Z])oo" "overline" rA
+`!p snip.rv = match.group(1)`\overline{${1:${VISUAL:}}} $0
+endsnippet 
+
+
+
+#tikz
+
