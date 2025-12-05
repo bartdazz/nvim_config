@@ -122,7 +122,12 @@ return {
       i(1), i(2), i(3), i(0)
     })
   ),
-
+  s({ trig = "(^|[^a-zA-Z])dd", regTrig = true, wordTrig = false, trigEngine = "pattern" },
+    fmt("{}\\mathrm{d}{{}}{}", {
+      f(function(_, snip) return snip.captures[1] end),
+      i(1), i(0)
+    })
+  ),
   -- Vector notation
   s({ trig = "(^|[^a-zA-Z])vv", regTrig = true, wordTrig = false, trigEngine = "pattern" },
     fmt("{}\\vec{{{}}}{}", {

@@ -133,6 +133,10 @@ snippet "(^|[^a-zA-Z])ddi" "derivata i-esima" r
 \deriv[$1]{$2}{$3} $0
 endsnippet
 
+snippet ìd "derivative" iA
+\mathrm{d} $0
+endsnippet
+
 #non funziona
 snippet :: "\colon" iA
 \colon $0
@@ -167,8 +171,12 @@ snippet TR "traccia" iA
 \tr_{$1}($2) $0
 endsnippet
 
-snippet lk "estensione" iA
-L/K$0
+#snippet lk "estensione" iA
+#L/K$0
+#endsnippet
+
+snippet m1 "identity matrix" iA
+\mathbb{1} $0
 endsnippet
 
 snippet kj "" iA
@@ -183,9 +191,9 @@ snippet Ka "estensione" iA
 K(\alpha)$0
 endsnippet
 
-snippet gg "galois" i
-\gal($1) $0
-endsnippet
+#snippet gg "galois" i
+#\gal($1) $0
+#endsnippet
 
 snippet dm "matrice 2x2" A
 \begin{pmatrix}
@@ -227,9 +235,9 @@ snippet 1cc "1cociclo" iA
 $ 1- $cociclo $0
 endsnippet
 
-snippet gm "Gmodulo" iA
-$G$-modulo$0
-endsnippet
+#snippet gm "Gmodulo" iA
+#$G$-modulo$0
+#endsnippet
 
 snippet l+ "L^*" iA
 L^*
